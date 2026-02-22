@@ -1,0 +1,23 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "hoss-claude-skills",
+  "description": "Custom Claude Code skills for productivity workflows",
+  "owner": {
+    "name": "Hoss",
+    "email": "CJHwong@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "sort-later",
+      "description": "Organize messy bookmarks into markdown notes (articles) and browser-importable HTML (functional sites). Works with any bookmark source — browser exports, Pocket, Raindrop, Instapaper, plain URL lists, or anything else.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Hoss",
+        "email": "CJHwong@gmail.com"
+      },
+      "source": "./plugins/sort-later",
+      "category": "productivity",
+      "homepage": "https://github.com/CJHwong/hoss-claude-skills/tree/main/plugins/sort-later"
+    }
+  ]
+}
