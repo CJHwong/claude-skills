@@ -8,6 +8,54 @@
   },
   "plugins": [
     {
+      "name": "agent-teams",
+      "description": "Multi-agent orchestration: spin up a read-only research team to explore a topic from multiple angles, or an implementation team that follows a phased PRAR workflow.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Hoss",
+        "email": "CJHwong@gmail.com"
+      },
+      "source": "./plugins/agent-teams",
+      "category": "productivity",
+      "homepage": "https://github.com/CJHwong/claude-skills/tree/main/plugins/agent-teams"
+    },
+    {
+      "name": "code-craft",
+      "description": "Inner-loop coding helpers: skills to organize uncommitted changes into clean commits (git-commit) and rewrite messy branch history before a PR (rewrite-commits), plus subagents for codebase research, runtime verification, test running, commit organization, and scope guarding.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Hoss",
+        "email": "CJHwong@gmail.com"
+      },
+      "source": "./plugins/code-craft",
+      "category": "productivity",
+      "homepage": "https://github.com/CJHwong/claude-skills/tree/main/plugins/code-craft"
+    },
+    {
+      "name": "prose-guard",
+      "description": "Quality control for written output: flag AI-slop in agent-generated text and suggest rewrites, and audit documents for unverified technical claims, verifying attributions against real sources (SIFT).",
+      "version": "1.0.0",
+      "author": {
+        "name": "Hoss",
+        "email": "CJHwong@gmail.com"
+      },
+      "source": "./plugins/prose-guard",
+      "category": "productivity",
+      "homepage": "https://github.com/CJHwong/claude-skills/tree/main/plugins/prose-guard"
+    },
+    {
+      "name": "utils",
+      "description": "Standalone utility skills: look at local images with a local vision model (OCR, describe, read diagrams) and prune stale ~/.claude/projects/ folders.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Hoss",
+        "email": "CJHwong@gmail.com"
+      },
+      "source": "./plugins/utils",
+      "category": "productivity",
+      "homepage": "https://github.com/CJHwong/claude-skills/tree/main/plugins/utils"
+    },
+    {
       "name": "distill",
       "description": "Distill insights from browser bookmarks/history, Pocket/Raindrop exports, or URL lists into an Obsidian vault. Scales to 76K+ URLs via domain triage, curl-based scraping, and model routing (haiku for triage, sonnet for classification).",
       "version": "1.1.0",
