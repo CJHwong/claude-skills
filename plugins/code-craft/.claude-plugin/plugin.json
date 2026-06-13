@@ -1,0 +1,5 @@
+{
+  "name": "code-craft",
+  "description": "Inner-loop coding helpers: skills to organize uncommitted changes into clean commits (git-commit) and rewrite messy branch history before a PR (rewrite-commits), plus subagents for codebase research, runtime verification, test running, commit organization, and scope guarding.",
+  "version": "1.0.0"
+}

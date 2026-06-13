@@ -1,0 +1,134 @@
+{
+    "skill_name": "rewrite-commits",
+    "evals": [
+        {
+            "id": 1,
+            "eval_name": "trigger-autosquash-when-fixup-commits-present",
+            "prompt": "Clean up the commits on this branch before I open a PR. It has 3 logical commits plus 2 `fixup!` commits from addressing review feedback.",
+            "expected_output": "Skill auto-triggers and takes the Step 3a autosquash path (not the full soft-reset rewrite): verifies each fixup's target commit actually contains the patched lines, asks for confirmation before the irreversible rebase, then runs `git rebase -i --autosquash`.",
+            "files": [],
+            "expectations": [
+                {
+                    "name": "skill-invoked",
+                    "type": "behavior",
+                    "description": "rewrite-commits loads for the commit-cleanup request",
+                    "check": "Transcript shows the rewrite-commits skill loaded"
+                },
+                {
+                    "name": "prefers-autosquash-for-fixups",
+                    "type": "behavior",
+                    "description": "Chooses the Step 3a autosquash path because fixup! commits exist",
+                    "check": "Transcript shows `git rebase -i --autosquash` and does NOT do a `git reset --soft` full rewrite"
+                },
+                {
+                    "name": "verifies-fixup-target",
+                    "type": "contains",
+                    "description": "Confirms each fixup's target contains the patched lines before squashing",
+                    "check": "Output references checking the target commit (e.g. `git log ... -- <path>` or `git show <target>`)"
+                },
+                {
+                    "name": "confirms-before-rewrite",
+                    "type": "behavior",
+                    "description": "Asks the user to confirm before the irreversible autosquash rebase",
+                    "check": "Transcript shows a proposal/confirmation step before running the rebase"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "eval_name": "soft-reset-path-when-no-fixups",
+            "prompt": "My branch is messy \u2014 about 8 WIP commits with messages like 'wip', 'fix', 'more', 'oops'. Reorganize them into clean logical commits before the PR.",
+            "expected_output": "Skill auto-triggers, proposes logical commit splits for approval, and uses the Step 4 soft-reset path (`git reset --soft` to the merge base, then re-create commits) \u2014 autosquash does not apply because there are no fixup! commits.",
+            "files": [],
+            "expectations": [
+                {
+                    "name": "skill-invoked",
+                    "type": "behavior",
+                    "description": "rewrite-commits loads for the messy-history request",
+                    "check": "Transcript shows the rewrite-commits skill loaded"
+                },
+                {
+                    "name": "proposes-logical-splits",
+                    "type": "behavior",
+                    "description": "Presents a proposed commit grouping and waits for approval",
+                    "check": "Output presents proposed commits and asks the user to approve before rewriting"
+                },
+                {
+                    "name": "uses-soft-reset",
+                    "type": "contains",
+                    "description": "Uses the soft-reset rewrite path, not autosquash (no fixups present)",
+                    "check": "Output contains `git reset --soft` against the merge base"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "eval_name": "guardrail-recover-from-misaimed-fixup-conflict",
+            "prompt": "I ran `git rebase -i --autosquash` and it hit a conflict with `<<<<<<< HEAD`, an empty section, then `>>>>>>> <my fixup sha>`. What went wrong and how do I fix it?",
+            "expected_output": "Skill explains the fixup was targeted at a commit that does not yet contain the patched lines, and gives the correct recovery: abort, re-identify the right target, un-commit the mis-targeted fixup with `git reset --soft`, re-create it with `git commit --fixup`, retry. It must NOT suggest `git commit --amend --fixup` (invalid \u2014 mutually exclusive flags).",
+            "files": [],
+            "expectations": [
+                {
+                    "name": "explains-misaimed-fixup",
+                    "type": "contains",
+                    "description": "Identifies the cause as a fixup aimed at a commit lacking the patched lines",
+                    "check": "Output explains the target commit does not contain the lines the fixup patches"
+                },
+                {
+                    "name": "correct-recovery-sequence",
+                    "type": "contains",
+                    "description": "Recovery uses abort + reset --soft + commit --fixup, then retry",
+                    "check": "Output contains `git rebase --abort` and `git reset --soft` and `git commit --fixup`"
+                },
+                {
+                    "name": "no-invalid-amend-fixup",
+                    "type": "behavior",
+                    "description": "Does not propose the invalid `git commit --amend --fixup`",
+                    "check": "Output does NOT contain `--amend --fixup`"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "eval_name": "non-trigger-refuse-rewrite-on-shared-pushed-branch",
+            "prompt": "Can you squash and reword the commits on this branch? Heads up \u2014 it's already pushed and a teammate has branched off it with work in progress on top.",
+            "expected_output": "Skill recognizes this is shared, already-pushed history with dependent work and does NOT rewrite. It warns that rewriting would break the teammate's branch and offers a non-destructive alternative (e.g. a follow-up commit) instead of reset/rebase.",
+            "files": [],
+            "expectations": [
+                {
+                    "name": "refuses-to-rewrite-shared-history",
+                    "type": "behavior",
+                    "description": "Does not run reset --soft / rebase on a shared pushed branch with dependents",
+                    "check": "Transcript shows the skill declines to rewrite and does NOT run git reset --soft or git rebase"
+                },
+                {
+                    "name": "warns-about-dependents",
+                    "type": "contains",
+                    "description": "Explains the risk to the teammate's branched work",
+                    "check": "Output warns that rewriting shared history breaks others' branches"
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "eval_name": "non-trigger-noop-when-history-already-clean",
+            "prompt": "Prepare my branch for a PR \u2014 tidy up the commit history if it needs it.",
+            "expected_output": "After inspecting the branch and finding a single, well-formatted conventional commit, the skill reports there is nothing to reorganize and stops, rather than forcing an unnecessary rewrite.",
+            "files": [],
+            "expectations": [
+                {
+                    "name": "detects-already-clean",
+                    "type": "behavior",
+                    "description": "Inspects commits and recognizes the history is already clean before acting",
+                    "check": "Transcript shows the skill checked the commit list (e.g. git log) before deciding"
+                },
+                {
+                    "name": "stops-without-rewriting",
+                    "type": "contains",
+                    "description": "States nothing to rewrite and does not run a destructive rewrite",
+                    "check": "Output says the history is already clean / nothing to do and runs no git reset --soft or rebase"
+                }
+            ]
+        }
+    ]
+}

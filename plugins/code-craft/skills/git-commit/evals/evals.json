@@ -1,0 +1,92 @@
+{
+  "skill_name": "git-commit",
+  "evals": [
+    {
+      "id": 1,
+      "eval_name": "trigger-commit-current-work",
+      "prompt": "Commit my changes. Split them into logical commits if needed.",
+      "expected_output": "Skill auto-triggers, inspects current git status and diffs, proposes logical commit groupings, and waits for approval before staging or committing.",
+      "files": [],
+      "expectations": [
+        {
+          "name": "skill-invoked",
+          "type": "behavior",
+          "description": "git-commit loads for a request to commit current work",
+          "check": "Transcript shows the git-commit skill loaded"
+        },
+        {
+          "name": "plans-before-commit",
+          "type": "behavior",
+          "description": "Presents a commit plan and asks for confirmation before git add or git commit",
+          "check": "Transcript shows a commit plan before any staging or commit command"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "eval_name": "trigger-write-why-how-commit-messages",
+      "prompt": "Organize the staged and unstaged changes into [why]/[how] commits.",
+      "expected_output": "Skill auto-triggers, groups staged and unstaged changes by logical purpose, drafts commit messages with [why] and [how] sections, and waits for approval.",
+      "files": [],
+      "expectations": [
+        {
+          "name": "skill-invoked",
+          "type": "behavior",
+          "description": "git-commit loads for [why]/[how] commit formatting",
+          "check": "Transcript shows the git-commit skill loaded"
+        },
+        {
+          "name": "uses-why-how",
+          "type": "contains",
+          "description": "Drafts commit messages with [why] and [how] sections",
+          "check": "Output contains [why] and [how] commit body sections"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "eval_name": "non-trigger-existing-history-rewrite",
+      "prompt": "Squash the last five commits and reword them before I open the PR.",
+      "expected_output": "git-commit does not trigger because the request is about rewriting existing branch history. The rewrite-commits skill should handle it instead.",
+      "files": [],
+      "expectations": [
+        {
+          "name": "skill-not-invoked",
+          "type": "behavior",
+          "description": "git-commit does not load for existing commit history cleanup",
+          "check": "Transcript does not show the git-commit skill loaded"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "eval_name": "non-trigger-github-pr-operation",
+      "prompt": "Create a pull request for this branch and include the test plan.",
+      "expected_output": "git-commit does not trigger because the request is a GitHub PR operation, not local commit creation.",
+      "files": [],
+      "expectations": [
+        {
+          "name": "skill-not-invoked",
+          "type": "behavior",
+          "description": "git-commit does not load for PR creation",
+          "check": "Transcript does not show the git-commit skill loaded"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "eval_name": "non-trigger-remote-ci-check",
+      "prompt": "Check why CI failed on my PR.",
+      "expected_output": "git-commit does not trigger because the request is about remote GitHub CI status, not current local uncommitted changes.",
+      "files": [],
+      "expectations": [
+        {
+          "name": "skill-not-invoked",
+          "type": "behavior",
+          "description": "git-commit does not load for remote CI checks",
+          "check": "Transcript does not show the git-commit skill loaded"
+        }
+      ]
+    }
+  ]
+}
