@@ -1,0 +1,5 @@
+{
+  "name": "agent-teams",
+  "description": "Multi-agent orchestration: spin up a read-only research team to explore a topic from multiple angles, or an implementation team that follows a phased PRAR workflow.",
+  "version": "1.0.0"
+}
