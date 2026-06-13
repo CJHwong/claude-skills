@@ -1,0 +1,17 @@
+{
+  "skill_name": "ollama-vision",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "here's a screenshot of an ollama model page i took earlier, can you extract all the text from it? the file is at evals/files/screenshot_model_page.png",
+      "expected_output": "Raw OCR transcription of all visible text in the screenshot, preserving layout to some degree",
+      "files": ["evals/files/screenshot_model_page.png"],
+      "expectations": [
+        "Output includes the model name 'gemma4'",
+        "Output includes the tag 'vision'",
+        "Output includes the context window size '256K' or '256k'",
+        "Output includes structured or tabular data from the benchmark section"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "name": "utils",
+  "description": "Standalone utility skills: look at local images with a local vision model (OCR, describe, read diagrams) and prune stale ~/.claude/projects/ folders.",
+  "version": "1.0.0"
+}
