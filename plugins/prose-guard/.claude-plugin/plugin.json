@@ -1,0 +1,5 @@
+{
+  "name": "prose-guard",
+  "description": "Quality control for written output: flag AI-slop in agent-generated text and suggest rewrites, and audit documents for unverified technical claims, verifying attributions against real sources (SIFT).",
+  "version": "1.0.0"
+}
