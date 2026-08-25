@@ -162,9 +162,11 @@ vault_path: /Users/.../Obsidian/Insights
 source:
   type: zen                    # or: firefox, chrome, arc, brave, safari, file
   profile_path: ~/Library/...  # for browser sources
-  last_bookmark_id: 2405       # browser-specific watermarks
+  last_bookmark_dateAdded: 1774784941635000   # browser-specific watermarks
   last_history_timestamp: 1774972539187785
 ```
+
+Watermarks are microsecond timestamps, never row ids. Firefox reuses the ids freed by a deleted bookmark, and Sync renumbers them, so an id watermark either skips every new bookmark or reprocesses all of them. `references/browser-schemas.md` gives the per-browser column for each timestamp.
 
 **`domain-cache.yaml`** — cached domain classifications (shared across all sources):
 ```yaml
